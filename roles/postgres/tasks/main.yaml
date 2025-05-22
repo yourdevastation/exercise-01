@@ -1,0 +1,55 @@
+---
+- name: Add PostgreSQL apt key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+- name: Add PostgreSQL repository
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main
+
+- name: Install PostgreSQL {{ postgresql_version }}
+  apt:
+    name: postgresql-{{ postgresql_version }}
+    update_cache: yes
+    
+- name: Install python3 dependences for PostgreSQL modules
+  apt:
+    name: python3-psycopg2
+    state: present
+
+- name: Ensure acl package is installed (for setfacl)
+  apt:
+    name: acl
+    state: present
+    update_cache: true
+
+- name: Copy database configuration
+  template:
+    src: postgresql.conf.j2
+    dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: '0644'
+
+- name: Copy user access configuration
+  template:
+    src: pg_hba.conf.j2
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: '0640'
+  notify: restart postgresql
+
+- name: Create PostgreSQL user
+  postgresql_user:
+    state: present
+    name: postgres
+    password: postgres
+  become: true
+  become_user: postgres
+
+- name: Ensure PostgreSQL service running
+  service:
+    name: postgresql
+    state: started
+    enabled: true

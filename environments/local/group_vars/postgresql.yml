@@ -1,0 +1,2 @@
+postgresql_version: "14"
+allowed_ip_range: "192.168.56.1/24"

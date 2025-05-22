@@ -1,0 +1,19 @@
+# Directories
+data_directory = '/var/lib/postgresql/{{ postgresql_version }}/main'
+hba_file = '/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf'
+ident_file = '/etc/postgresql/{{ postgresql_version }}/main/pg_ident.conf'
+external_pid_file = '/var/run/postgresql/{{ postgresql_version }}-main.pid'
+
+# Connection settings
+listen_addresses = '*'
+port = 5432
+max_connections = 100
+unix_socket_directories = '/var/run/postgresql'
+
+# Memory settings
+shared_buffers = 128MB
+
+# Logging
+logging_collector = on
+log_directory = '/var/log/postgresql'
+log_filename = 'postgresql-{{ postgresql_version }}-main.log'

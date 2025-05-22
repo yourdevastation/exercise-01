@@ -1,0 +1,15 @@
+# PostgreSQL Client Authentication Configuration File
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# DB administrative login by Unix domain socket only
+local   all             postgres                                peer
+
+# IPv4 local connections:
+host   all             all             127.0.0.1/32            md5
+
+# IPv6 local connections:
+host   all             all             ::1/128                 md5
+
+# Allow remote connections from specific subnet
+host    all             all             {{ allowed_ip_range | default('0.0.0.0/0') }}   md5
+
