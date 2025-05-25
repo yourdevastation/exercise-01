@@ -1,0 +1,4 @@
+postgresql_version: "14"
+allowed_ip_range: "192.168.56.1/24"
+postgres_user : "{{ vault_postgres_user }}"
+postgres_password: "{{ vault_postgres_password }}"

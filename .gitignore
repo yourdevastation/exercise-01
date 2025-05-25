@@ -1,0 +1,5 @@
+# Ansible vault password file
+.vault_password.txt
+
+# Vagrant files
+.vagrant
